@@ -183,8 +183,8 @@ void MyWindow::setLights()
     for( int i = 0; i < 5; i++ ) {
         std::stringstream name;
         name << "Lights[" << i << "].Position";
-        x = 2.0f * cosf((TwoPI / 5) * i);
-        z = 2.0f * sinf((TwoPI / 5) * i);
+        x = 2.0f * cosf((float)(TwoPI / 5.0f) * (float)i);
+        z = 2.0f * sinf((float)(TwoPI / 5.0f) * (float)i);
         mProgram2SidesMultipleLights->setUniformValue(name.str().c_str(), ViewMatrix * QVector4D(x, 1.2f, z + 1.0f, 1.0f) );
     }
 

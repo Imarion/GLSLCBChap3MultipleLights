@@ -17,7 +17,7 @@
 
 #define ToRadian(x) ((x) * M_PI / 180.0f)
 #define ToDegree(x) ((x) * 180.0f / M_PI)
-#define TwoPI       (2 * M_PI)
+#define TwoPI       (float)(2 * M_PI)
 
 //class MyWindow : public QWindow, protected QOpenGLFunctions_3_3_Core
 class MyWindow : public QWindow, protected QOpenGLFunctions
