@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fshader_2sides_multiplelights.txt</file>
+        <file>vshader_2sides_multiplelights.txt</file>
+    </qresource>
+</RCC>
