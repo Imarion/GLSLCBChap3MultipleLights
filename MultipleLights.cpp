@@ -91,7 +91,7 @@ void MyWindow::CreateVertexBuffer()
     // Pig
     mFuncs->glGenVertexArrays(1, &mVAOPig);
     mFuncs->glBindVertexArray(mVAOPig);
-    mPig   = new VBOMesh("pig_triangulated.obj");
+    mPig   = new VBOMesh("pig_triangulated.obj", true);
     // Create and populate the buffer objects
     unsigned int PigHandles[3];
     glGenBuffers(3, PigHandles);
@@ -164,8 +164,8 @@ void MyWindow::initMatrices()
     ModelMatrixPlane.translate(0.0f, -0.45f, 0.0f);
 
     ViewMatrix.setToIdentity();
-    //ViewMatrix.lookAt(QVector3D(0.5f, 0.75f, 0.75f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f,1.0f,0.0f));
-    ViewMatrix.lookAt(QVector3D(0.0f, 0.0f, -2.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f,1.0f,0.0f));
+    ViewMatrix.lookAt(QVector3D(0.5f, 0.75f, 0.75f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f,1.0f,0.0f));
+    //ViewMatrix.lookAt(QVector3D(0.0f, 0.0f, -2.0f), QVector3D(0.0f, 0.0f, 0.0f), QVector3D(0.0f,1.0f,0.0f));
 }
 
 void MyWindow::resizeEvent(QResizeEvent *)
