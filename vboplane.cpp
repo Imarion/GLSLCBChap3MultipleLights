@@ -61,33 +61,6 @@ VBOPlane::VBOPlane(float xsize, float zsize, int xdivs, int zdivs, float smax, f
             idx += 6;
         }
     }
-/*
-    unsigned int handle[4];
-    glGenBuffers(4, handle);
-
-	glGenVertexArrays( 1, &vaoHandle );
-    glBindVertexArray(vaoHandle);
-
-    glBindBuffer(GL_ARRAY_BUFFER, handle[0]);
-    glBufferData(GL_ARRAY_BUFFER, 3 * (xdivs+1) * (zdivs+1) * sizeof(float), v, GL_STATIC_DRAW);
-    glVertexAttribPointer( (GLuint)0, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0)) );
-    glEnableVertexAttribArray(0);  // Vertex position
-
-	glBindBuffer(GL_ARRAY_BUFFER, handle[1]);
-    glBufferData(GL_ARRAY_BUFFER, 3 * (xdivs+1) * (zdivs+1) * sizeof(float), n, GL_STATIC_DRAW);
-    glVertexAttribPointer( (GLuint)1, 3, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0)) );
-    glEnableVertexAttribArray(1);  // Vertex normal
-
-    glBindBuffer(GL_ARRAY_BUFFER, handle[2]);
-    glBufferData(GL_ARRAY_BUFFER, 2 * (xdivs+1) * (zdivs+1) * sizeof(float), tex, GL_STATIC_DRAW);
-    glVertexAttribPointer( (GLuint)2, 2, GL_FLOAT, GL_FALSE, 0, ((GLubyte *)NULL + (0)) );
-    glEnableVertexAttribArray(2);  // Texture coords
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle[3]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * xdivs * zdivs * sizeof(unsigned int), el, GL_STATIC_DRAW);
-
-    glBindVertexArray(0);    
-*/
 }
 
 float *VBOPlane::getv()

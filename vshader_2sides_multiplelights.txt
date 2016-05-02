@@ -30,7 +30,7 @@ vec3 phongModel( int lightIndex, vec4 position, vec3 normal ) {
     vec3 s         = normalize(vec3(Lights[lightIndex].Position - position));
     vec3 v         = normalize(-position.xyz); // In eyeCoords, the viewer is at the origin -> only take negation of eyeCoords vector
     vec3 r         = reflect (-s, normal);
-    vec3 i         = Lights[lightIndex].Intensity;
+    vec3 li        = Lights[lightIndex].Intensity;
 
     float sDotN    = max(dot(s, normal), 0.0);
 
@@ -41,7 +41,7 @@ vec3 phongModel( int lightIndex, vec4 position, vec3 normal ) {
         spec = Material.Ks * pow(max(dot(r,v), 0.0), Material.Shininess);
     }
 
-    return i * (ambient + diffuse + spec);
+    return li * (ambient + diffuse + spec);
 }
 
 

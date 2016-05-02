@@ -122,7 +122,6 @@ void MyWindow::CreateVertexBuffer()
     mFuncs->glBindVertexArray(0);
 
     // Plane
-    /*
     mFuncs->glGenVertexArrays(1, &mVAOPlane);
     mFuncs->glBindVertexArray(mVAOPlane);
     mPlane = new VBOPlane(10.0f, 10.0f, 100, 100);
@@ -137,7 +136,7 @@ void MyWindow::CreateVertexBuffer()
     glBufferData(GL_ARRAY_BUFFER, (3 * mPlane->getnVerts()) * sizeof(float), mPlane->getn(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, PlaneHandles[2]);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * mPlane->getnFaces() * sizeof(unsigned int), mPlane->getelems(), GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * mPlane->getnFaces() * sizeof(unsigned int), mPlane->getelems(), GL_STATIC_DRAW);
 
     // Setup the VAO
     // Vertex positions
@@ -154,7 +153,6 @@ void MyWindow::CreateVertexBuffer()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, PlaneHandles[2]);
 
     mFuncs->glBindVertexArray(0);
-    */
 }
 
 void MyWindow::initMatrices()
@@ -189,10 +187,10 @@ void MyWindow::setLights()
     }
 
     mProgram2SidesMultipleLights->setUniformValue("Lights[0].Intensity", 0.0f, 0.8f, 0.8f);
-    mProgram2SidesMultipleLights->setUniformValue("Lights[1].Intensity", 0.0f,0.0f,0.8f);
-    mProgram2SidesMultipleLights->setUniformValue("Lights[2].Intensity", 0.8f,0.0f,0.0f);
-    mProgram2SidesMultipleLights->setUniformValue("Lights[3].Intensity", 0.0f,0.8f,0.0f);
-    mProgram2SidesMultipleLights->setUniformValue("Lights[4].Intensity", 0.8f,0.8f,0.8f);
+    mProgram2SidesMultipleLights->setUniformValue("Lights[1].Intensity", 0.0f, 0.0f, 0.8f);
+    mProgram2SidesMultipleLights->setUniformValue("Lights[2].Intensity", 0.8f, 0.0f, 0.0f);
+    mProgram2SidesMultipleLights->setUniformValue("Lights[3].Intensity", 0.0f, 0.8f, 0.0f);
+    mProgram2SidesMultipleLights->setUniformValue("Lights[4].Intensity", 0.8f, 0.8f, 0.8f);
 }
 
 void MyWindow::render()
@@ -220,9 +218,38 @@ void MyWindow::render()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Pig
     //QMatrix4x4 RotationMatrix;
     //RotationMatrix.rotate(EvolvingVal, QVector3D(0.1f, 0.0f, 0.1f));
     //ModelMatrix.rotate(0.3f, QVector3D(0.1f, 0.0f, 0.1f));
+    mFuncs->glBindVertexArray(mVAOPig);
+
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+
+    mProgram2SidesMultipleLights->bind();
+    {
+        setLights();        
+
+        mProgram2SidesMultipleLights->setUniformValue("Material.Kd", 0.4f, 0.4f, 0.4f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Ks", 0.9f, 0.9f, 0.9f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Ka", 0.1f, 0.1f, 0.1f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Shininess", 180.0f);
+
+        QMatrix4x4 mv1 = ViewMatrix * ModelMatrixPig;
+        mProgram2SidesMultipleLights->setUniformValue("ModelViewMatrix", mv1);
+        mProgram2SidesMultipleLights->setUniformValue("NormalMatrix", mv1.normalMatrix());
+        mProgram2SidesMultipleLights->setUniformValue("MVP", ProjectionMatrix * mv1);
+
+        glDrawElements(GL_TRIANGLES, 3 * mPig->getnFaces(), GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
+
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+    }
+    mProgram2SidesMultipleLights->release();
+
+    // Plane
+    mFuncs->glBindVertexArray(mVAOPlane);
 
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -231,34 +258,18 @@ void MyWindow::render()
     {
         setLights();
 
-        mFuncs->glBindVertexArray(mVAOPig);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Kd", 0.1f, 0.1f, 0.1f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Ks", 0.9f, 0.9f, 0.9f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Ka", 0.1f, 0.1f, 0.1f);
+        mProgram2SidesMultipleLights->setUniformValue("Material.Shininess", 180.0f);
 
-        mProgram2SidesMultipleLights->setUniformValue("Material.Kd", 0.9f, 0.5f, 0.3f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Ka", 0.9f, 0.5f, 0.3f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Ks", 0.8f, 0.8f, 0.8f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Shininess", 100.0f);
-
-        QMatrix4x4 mv1 = ViewMatrix * ModelMatrixPig;
+        QMatrix4x4 mv1 = ViewMatrix * ModelMatrixPlane;
         mProgram2SidesMultipleLights->setUniformValue("ModelViewMatrix", mv1);
         mProgram2SidesMultipleLights->setUniformValue("NormalMatrix", mv1.normalMatrix());
         mProgram2SidesMultipleLights->setUniformValue("MVP", ProjectionMatrix * mv1);
 
-        glDrawElements(GL_TRIANGLES, 3 * mPig->getnFaces(), GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
-/*
-        mFuncs->glBindVertexArray(mVAOPlane);
+        glDrawElements(GL_TRIANGLES, 6 * mPlane->getnFaces(), GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
 
-        mProgram2SidesMultipleLights->setUniformValue("Material.Kd", 0.9f, 0.5f, 0.3f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Ka", 0.9f, 0.5f, 0.3f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Ks", 0.8f, 0.8f, 0.8f);
-        mProgram2SidesMultipleLights->setUniformValue("Material.Shininess", 100.0f);
-
-        QMatrix4x4 mv2 = ViewMatrix * ModelMatrixPlane;
-        mProgram2SidesMultipleLights->setUniformValue("ModelViewMatrix", mv2);
-        mProgram2SidesMultipleLights->setUniformValue("NormalMatrix", mv2.normalMatrix());
-        mProgram2SidesMultipleLights->setUniformValue("MVP", ProjectionMatrix * mv2);
-
-        glDrawElements(GL_TRIANGLES, 3 * mPlane->getnFaces(), GL_UNSIGNED_INT, ((GLubyte *)NULL + (0)));
-*/
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
     }
